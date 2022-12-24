@@ -1,5 +1,5 @@
 <template>
-<h1>美食大战老鼠</h1>
+<h1>美食大战老鼠强化最优路径</h1>
 </template>
 
 <script>

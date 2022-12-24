@@ -2,11 +2,11 @@
   <div style="margin-bottom:50px;">
     <el-form ref="form" label-width="80px" :inline="true">
       <el-form-item label="目标星级">
-        <el-input v-model="star" style="width: 60px;" type="number"></el-input>
+        <el-input v-model="star" style="width: 60px;" type="number" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></el-input>
       </el-form-item>
 
       <el-form-item label="目标张数">
-        <el-input v-model="num" style="width: 60px;"></el-input>
+        <el-input v-model="num" style="width: 60px;" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></el-input>
       </el-form-item>
     </el-form>
 
@@ -46,7 +46,7 @@ const num = ref("");
 const radio1 = ref("");
 let result = ref("");
 const calculate = (star, num) => {
-  if (star > 16 | star < 0 | num < 0) {
+  if (star > 16 | star <= 0 | num <= 0) {
     return NaN;
   }
   return String(Math.pow(2, star) * num);
@@ -55,13 +55,13 @@ const calculate = (star, num) => {
 let analysis = ref("");
 const analyze = (star, num) => {
   if (star > 16) {
-    return "卡片星级不能超过16星!";
+    return "卡片星级不能超过16星";
   }
-  if (star < 0) {
-    return "卡片星级不能小于0!";
+  if (star <= 0) {
+    return "卡片星级必须为正数";
   }
-  if (num < 0) {
-    return "卡片数量不能小于0!";
+  if (num <= 0) {
+    return "卡片数量必须为正数";
   }
   return "经过分析，强化" + num + "张" + star + "星卡牌至少需要" + calculate(star, num) + "张0星卡";
 };
