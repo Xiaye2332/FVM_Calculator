@@ -1,4 +1,8 @@
 <template>
+
+  <h5>说明:</h5>
+  <span class="notice">1.成功率加成为打开背包后鼠标移动到“属性加成”区域显示的“卡片成功率+ xx%”字样。本程序认为游戏中给出的概率表示实际上为相加关系。例如“80%+20%”会作为100%处理 <br> 2.计算结果为通过计算机模拟大量样本情况下的最终结果 <br> 3.期望值表示按照目前给出的强化方案，强化到各个星级所需要的0星好卡的平均数量。建议用户通过不断调整四叶草使用方案，来观察期望值的变化，从而挑选出较为适合自身的强化方案</span>
+  <el-divider></el-divider>
   <h5>贡献者:</h5>
   <div class="mb-4" data-v-732d6162="">
     <div class="flex flex-wrap gap-4 pt-2" data-v-732d6162="">
@@ -6,12 +10,23 @@
                                  style="text-decoration: none;color:black" target="_blank"><img
         src="https://avatars.githubusercontent.com/u/75305545?v=4" class="w-8 h-8 rounded-full"> <span>skydyboy</span>
         <!----></a></div>
+
+      <br><br>
+
       <div style="height:32px;"><a class="link-item link flex gap-2 items-center link" href="https://github.com/Xiaye2332"
                                  style="text-decoration: none;color:black" target="_blank"><img
         src="https://avatars.githubusercontent.com/u/86192453?v=4" class="w-8 h-8 rounded-full"> <span style="margin:auto">夏夜浅酌</span>
         <!----></a></div>
+
+      <br>
+
+      <div style="height:32px;"><a class="link-item link flex gap-2 items-center link" href="https://space.bilibili.com/59516411"
+                                   style="text-decoration: none;color:black" target="_blank"><img
+          src="http://mms0.baidu.com/it/u=891284316,1073249366&fm=253&app=138&f=JPEG&fmt=auto&q=75?w=300&h=300" class="w-8 h-8 rounded-full"> <span style="margin:auto">剑舞青芒</span>
+        <!----></a></div>
     </div>
   </div>
+  <span class="notice">本页面遵照GPLv3协议开放源代码，您可以自由传播和修改，转载请注明作者和出处<br><br><br></span>
 </template>
 
 <style scoped>
@@ -77,5 +92,14 @@ body {
   display: flex;
   align-items: center;
 }
-
+.notice {
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\5fae\8f6f\96c5\9ed1,Arial,sans-serif;
+  font-weight: 400;
+  font-size: var(--el-font-size-base);
+  color: var(--el-text-color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  margin-bottom: 50px;
+}
 </style>

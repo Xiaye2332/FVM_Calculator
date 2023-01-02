@@ -20,5 +20,3 @@ import Footer from "@/components/Footer.vue"
     </el-container>
   </div>
 </template>
-
-

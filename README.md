@@ -4,7 +4,7 @@
 
 ## 技术栈
 
-Vue3.0+ElementPlus UI
+Vue3+ElementPlus UI
 
 ## 未来方向
 
