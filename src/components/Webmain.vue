@@ -250,11 +250,13 @@ var finalProgramme = new Array();//存储最终使用的方案，开始前也需
 var showProgramme = new Array();
 
 function getProgramme() {
-  //验证四叶草输入是否全
-  if (clover1.value * clover2.value * clover3.value * clover4.value * clover5.value * clover6.value * clover7.value * clover8.value * clover9.value * clover10.value * clover11.value * clover12.value == 0) {
-    alert("四叶草输入不全")
-    return "四叶草输入不全";
-  }
+  //验证四叶草输入是否全 -> 这个功能在1.1版本被取消
+  // if (clover1.value * clover2.value * clover3.value * clover4.value * clover5.value * clover6.value * clover7.value * clover8.value * clover9.value * clover10.value * clover11.value * clover12.value == 0) {
+  //   alert("四叶草输入不全")
+  //   return "四叶草输入不全";
+  // }
+
+
 
   //初始化期望值，0星卡为1，其余初始化为-1，方便后续操作
   //初始化方案，全为-1
@@ -297,7 +299,10 @@ function getProgramme() {
   //alert(finalExpection);
   showResult(showProgramme,finalExpection);
 }
+//结果分析函数
 function showResult(showProgramme,finalExpection) {
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value>0)?clover1.value:1, (clover2.value>0)?clover2.value:1, (clover3.value>0)?clover3.value:1, (clover4.value>0)?clover4.value:1, (clover5.value>0)?clover5.value:1, (clover6.value>0)?clover6.value:1, (clover7.value>0)?clover7.value:1, (clover8.value>0)?clover8.value:1, (clover9.value>0)?clover9.value:1, (clover10.value>0)?clover10.value:1, (clover11.value>0)?clover11.value:1, (clover12.value>0)?clover12.value:1];
   let result = "";
   let k,i;
   for (k = 1; k <= 13; k++) {
@@ -309,6 +314,8 @@ function showResult(showProgramme,finalExpection) {
         result += showProgramme[k-1][i] + " ";
       }
     }
+    result += getCloverbyRate(clover[k-1]);
+    result += " "
     result += "概率："+((rateCalculate(k-1,showProgramme[k-1][0],showProgramme[k-1][1],showProgramme[k-1][2]))*100).toFixed(0)+"%+"+(bonus.value*rateCalculate(k-1,showProgramme[k-1][0],showProgramme[k-1][1],showProgramme[k-1][2])).toFixed(2)+"%"+" "
     result += "期望值："+finalExpection[k]+ '<br>';
     }
@@ -365,11 +372,38 @@ const rateValid = (rate) => {
   }
 }
 
-
+const getCloverbyRate = (rate) => {
+  switch (rate){
+    case 1:
+      return "不加草";
+    case 1.2:
+      return "1级四叶草";
+    case 1.4:
+      return "2级四叶草";
+    case 1.7:
+      return "3级四叶草";
+    case 2.0:
+      return "4级四叶草";
+    case 2.4:
+      return "5级四叶草";
+    case 2.7:
+      return "6级四叶草";
+    case 3.0:
+      return "超能四叶草";
+    case 3.2:
+      return "SS四叶草";
+    case 3.6:
+      return "SSS四叶草";
+    case 4.0:
+      return "SSR四叶草";
+    default:
+      return "未知";
+  }
+}
 //计算一张卡的强化成功率，参数为强化用卡，副卡1，副卡2，副卡3
 const rateCalculate = (mainstar, subcard1, subcard2, subcard3) => {
-  //将用户输入的四叶草数值存储到数组中
-  var clover = [1, clover1.value, clover2.value, clover3.value, clover4.value, clover5.value, clover6.value, clover7.value, clover8.value, clover9.value, clover10.value, clover11.value, clover12.value];
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value>0)?clover1.value:1, (clover2.value>0)?clover2.value:1, (clover3.value>0)?clover3.value:1, (clover4.value>0)?clover4.value:1, (clover5.value>0)?clover5.value:1, (clover6.value>0)?clover6.value:1, (clover7.value>0)?clover7.value:1, (clover8.value>0)?clover8.value:1, (clover9.value>0)?clover9.value:1, (clover10.value>0)?clover10.value:1, (clover11.value>0)?clover11.value:1, (clover12.value>0)?clover12.value:1];
   var a, b, c;
   if (subcard1 < 0){
     subcard1 = -1;

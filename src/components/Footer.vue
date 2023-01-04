@@ -26,7 +26,10 @@
         <!----></a></div>
     </div>
   </div>
-  <span class="notice">本页面遵照GPLv3协议开放源代码，您可以自由传播和修改，转载请注明作者和出处<br><br><br></span>
+  <span class="notice">本页面遵照GPLv3协议开放源代码，您可以自由传播和修改，转载请注明作者和出处<br></span>
+  <el-divider></el-divider>
+  <h5>更新日志:</h5>
+  <span class="notice">2023/1/4 取消了四叶草不全的提示，现不填写则默认不加四叶草；在结果区域展示所用四叶草<br><br><br></span>
 </template>
 
 <style scoped>

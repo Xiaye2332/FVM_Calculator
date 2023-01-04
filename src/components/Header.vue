@@ -1,5 +1,5 @@
 <template>
-<h1 class="header">美食大战老鼠强化最优路径</h1>
+<h1 class="header">美食强化最优路径计算器</h1>
 </template>
 
 <script>
