@@ -20,9 +20,9 @@
 
       <br>
 
-      <div style="height:32px;"><a class="link-item link flex gap-2 items-center link" href="https://space.bilibili.com/59516411"
+      <div style="height:32px;"><a class="link-item link flex gap-2 items-center link" href="https://github.com/czyczy608"
                                    style="text-decoration: none;color:black" target="_blank"><img
-          src="http://mms0.baidu.com/it/u=891284316,1073249366&fm=253&app=138&f=JPEG&fmt=auto&q=75?w=300&h=300" class="w-8 h-8 rounded-full"> <span style="margin:auto">剑舞青芒</span>
+          src="https://avatars.githubusercontent.com/u/57560140?v=4" class="w-8 h-8 rounded-full"> <span style="margin:auto">剑舞青芒</span>
         <!----></a></div>
     </div>
   </div>
