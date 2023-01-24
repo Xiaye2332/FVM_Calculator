@@ -252,10 +252,21 @@ var finalProgramme = new Array();//存储最终使用的方案，开始前也需
 var showProgramme = new Array();
 //打开消息提示框
 import {ElMessageBox} from 'element-plus'
+import {ElNotification} from 'element-plus'
 
 window.onload = function open() {
   ElMessageBox.alert('使用本计算器前请务必查看下方说明', '提醒', {
     confirmButtonText: '确定',
+  })
+}
+//问卷调查
+const open2 = () => {
+  ElNotification({
+    title: '计算完成',
+    dangerouslyUseHTMLString: true,
+    message: '<strong>如果你有任何问题或建议<br>请参加我们的<a href="https://survey.xiayeqz.com:3999/s/QEFoBL" style="text-decoration: none;color: #409EFF" target="_blank">问卷调查</a></strong>',
+    type: 'success',
+    duration: 3000,
   })
 }
 
@@ -331,6 +342,8 @@ function showResult(showProgramme, finalExpection) {
   }
   result += cloverCalculate(showProgramme); //显示四叶草消耗相关内容
   analysis.value = result;
+  //向用户报计算完成
+  open2();
 }
 
 function getExpection(mainStar, subStar1, subStar2, subStar3) {
@@ -473,8 +486,10 @@ const cloverCalculate = (showProgramme) => {
         result += "5级四叶草：" + cloverCalculate5(i, showProgramme) + "<br>";
     }
   }
+  //用户报计算完成
   return result;
 };
+
 //1级四叶草消耗量计算函数
 function cloverCalculate1(star, showProgramme) {
   var k, q;
@@ -519,6 +534,7 @@ function cloverCalculate1(star, showProgramme) {
     }
   }
 }
+
 //2级四叶草消耗量计算函数
 function cloverCalculate2(star, showProgramme) {
   var k, q;
@@ -563,6 +579,7 @@ function cloverCalculate2(star, showProgramme) {
     }
   }
 }
+
 //3级四叶草消耗量计算函数
 function cloverCalculate3(star, showProgramme) {
   var k, q;
@@ -607,6 +624,7 @@ function cloverCalculate3(star, showProgramme) {
     }
   }
 }
+
 //4级四叶草消耗量计算函数
 function cloverCalculate4(star, showProgramme) {
   var k, q;
@@ -651,6 +669,7 @@ function cloverCalculate4(star, showProgramme) {
     }
   }
 }
+
 //5级四叶草消耗量计算函数
 function cloverCalculate5(star, showProgramme) {
   var k, q;

@@ -2,9 +2,7 @@
 <h1 class="header">美食强化最优路径计算器</h1>
 </template>
 
-<script>
 
-</script>
 
 <style scoped>
 .header{
