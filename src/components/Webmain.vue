@@ -1,5 +1,6 @@
 <template>
   <div style="margin-bottom:50px;" class="form">
+
     <el-form ref="form" label-width="100px" :inline="true">
       <!--      <el-form-item label="目标星级">-->
       <!--        <el-input v-model="star" style="width: 100px;" type="number"-->
@@ -114,18 +115,17 @@
           />
         </el-select>
       </el-form-item>
-      <!--      <el-form-item label="是否绑定">-->
-      <!--        <el-radio-group v-model="radio1">-->
-      <!--          <el-radio label="1" size="large">是</el-radio>-->
-      <!--          <el-radio label="2" size="large">否</el-radio>-->
-      <!--        </el-radio-group>-->
-      <!--      </el-form-item>-->
+      <el-form-item label="四叶草消耗">
+        <el-radio-group v-model="CloverResume">
+          <el-radio label="1" size="large">计算</el-radio>
+          <el-radio label="2" size="large">不计算</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" :icon="EditPen" @click="getProgramme()">计算
         </el-button>
       </el-form-item>
-
 
 
       <el-form-item label="计算结果">
@@ -137,6 +137,7 @@
 </template>
 
 <script lang="ts" setup>
+
 import {ref} from "vue";
 import {EditPen} from "@element-plus/icons-vue";
 
@@ -155,6 +156,7 @@ const clover9 = ref("");
 const clover10 = ref("");
 const clover11 = ref("");
 const clover12 = ref("");
+const CloverResume = ref("");
 
 // const radio1 = ref("");
 
@@ -248,6 +250,14 @@ const programme = [  //19种方案表，0表示同星级，-1表示低1星，-2�
 var finalExpection = new Array();//存储各个星级卡的期望价值，函数每次重新执行的时候需要初始化
 var finalProgramme = new Array();//存储最终使用的方案，开始前也需要初始化
 var showProgramme = new Array();
+//打开消息提示框
+import {ElMessageBox} from 'element-plus'
+
+window.onload = function open() {
+  ElMessageBox.alert('使用本计算器前请务必查看下方说明', '提醒', {
+    confirmButtonText: '确定',
+  })
+}
 
 function getProgramme() {
   //验证四叶草输入是否全 -> 这个功能在1.1版本被取消
@@ -255,7 +265,6 @@ function getProgramme() {
   //   alert("四叶草输入不全")
   //   return "四叶草输入不全";
   // }
-
 
 
   //初始化期望值，0星卡为1，其余初始化为-1，方便后续操作
@@ -297,29 +306,31 @@ function getProgramme() {
 
   //alert(showProgramme);
   //alert(finalExpection);
-  showResult(showProgramme,finalExpection);
+  showResult(showProgramme, finalExpection);
 }
+
 //结果分析函数
-function showResult(showProgramme,finalExpection) {
+function showResult(showProgramme, finalExpection) {
   //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
-  var clover = [1, (clover1.value>0)?clover1.value:1, (clover2.value>0)?clover2.value:1, (clover3.value>0)?clover3.value:1, (clover4.value>0)?clover4.value:1, (clover5.value>0)?clover5.value:1, (clover6.value>0)?clover6.value:1, (clover7.value>0)?clover7.value:1, (clover8.value>0)?clover8.value:1, (clover9.value>0)?clover9.value:1, (clover10.value>0)?clover10.value:1, (clover11.value>0)?clover11.value:1, (clover12.value>0)?clover12.value:1];
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
   let result = "";
-  let k,i;
+  let k, i;
   for (k = 1; k <= 13; k++) {
     result += "上" + k + "方法：";
-    for (i=0;i<=2;i++){
-      if(showProgramme[k-1][i] < 0){
+    for (i = 0; i <= 2; i++) {
+      if (showProgramme[k - 1][i] < 0) {
         result += "X "
-      }else{
-        result += showProgramme[k-1][i] + " ";
+      } else {
+        result += showProgramme[k - 1][i] + " ";
       }
     }
-    result += getCloverbyRate(clover[k-1]);
+    result += getCloverbyRate(clover[k - 1]);
     result += " "
-    result += "概率："+((rateCalculate(k-1,showProgramme[k-1][0],showProgramme[k-1][1],showProgramme[k-1][2]))*100).toFixed(0)+"%+"+(bonus.value*rateCalculate(k-1,showProgramme[k-1][0],showProgramme[k-1][1],showProgramme[k-1][2])).toFixed(2)+"%"+" "
-    result += "期望值："+finalExpection[k]+ '<br>';
-    }
-  analysis.value=result;
+    result += "概率：" + ((rateCalculate(k - 1, showProgramme[k - 1][0], showProgramme[k - 1][1], showProgramme[k - 1][2])) * 100).toFixed(0) + "%+" + (bonus.value * rateCalculate(k - 1, showProgramme[k - 1][0], showProgramme[k - 1][1], showProgramme[k - 1][2])).toFixed(2) + "%" + " "
+    result += "期望值：" + finalExpection[k] + '<br>';
+  }
+  result += cloverCalculate(showProgramme); //显示四叶草消耗相关内容
+  analysis.value = result;
 }
 
 function getExpection(mainStar, subStar1, subStar2, subStar3) {
@@ -355,15 +366,6 @@ function getExpection(mainStar, subStar1, subStar2, subStar3) {
 }
 
 
-// const calculate = (star, num) => {  //废弃的函数
-//   if (star > 16 | star <= 0 | num <= 0) {
-//     return NaN;
-//   }
-//   return rateCalculate(star,star,-1,-1);
-// };
-//
-
-
 const rateValid = (rate) => {
   if (rate >= 1) {
     return 1;
@@ -373,7 +375,7 @@ const rateValid = (rate) => {
 }
 
 const getCloverbyRate = (rate) => {
-  switch (rate){
+  switch (rate) {
     case 1:
       return "不加草";
     case 1.2:
@@ -403,15 +405,15 @@ const getCloverbyRate = (rate) => {
 //计算一张卡的强化成功率，参数为强化用卡，副卡1，副卡2，副卡3
 const rateCalculate = (mainstar, subcard1, subcard2, subcard3) => {
   //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
-  var clover = [1, (clover1.value>0)?clover1.value:1, (clover2.value>0)?clover2.value:1, (clover3.value>0)?clover3.value:1, (clover4.value>0)?clover4.value:1, (clover5.value>0)?clover5.value:1, (clover6.value>0)?clover6.value:1, (clover7.value>0)?clover7.value:1, (clover8.value>0)?clover8.value:1, (clover9.value>0)?clover9.value:1, (clover10.value>0)?clover10.value:1, (clover11.value>0)?clover11.value:1, (clover12.value>0)?clover12.value:1];
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
   var a, b, c;
-  if (subcard1 < 0){
+  if (subcard1 < 0) {
     subcard1 = -1;
   }
-  if (subcard2 < 0){
+  if (subcard2 < 0) {
     subcard2 = -1;
   }
-  if (subcard3 < 0){
+  if (subcard3 < 0) {
     subcard3 = -1;
   }
   if (clover[mainstar] == 0) {
@@ -448,22 +450,251 @@ const rateCalculate = (mainstar, subcard1, subcard2, subcard3) => {
   }
   return rateValid((a + b / 3 + c / 3) * clover[mainstar]);
 };
-
-
-// const analyze = (star, num) => { //废弃的分析函数
-//   if (star > 16) {
-//     return "卡片星级不能超过16星";
-//   }
-//   if (star <= 0) {
-//     return "卡片星级必须为正数";
-//   }
-//   if (num <= 0) {
-//     return "卡片数量必须为正数";
-//   }
-//   return "经过分析，成功率为"+rateCalculate(star,star-1,-1,-1);
-// };
-
-
+//本函数仅将计算结果进行拼接显示
+const cloverCalculate = (showProgramme) => {
+  if (CloverResume.value == "" || CloverResume.value == 2)
+    return "<hr>由于选择了不计算四叶草消耗或没有勾选，本次不进行四叶草消耗的计算";
+  var result = "<hr>";
+  var i;
+  for (i = 7; i <= 9; i++) {
+    result += "单张卡上至" + i + "星平均消耗草量<br>"
+    if (cloverCalculate1(i, showProgramme) == 0 && cloverCalculate2(i, showProgramme) == 0 && cloverCalculate3(i, showProgramme) == 0 && cloverCalculate4(i, showProgramme) == 0 && cloverCalculate5(i, showProgramme) == 0)
+      result += "无需消耗四叶草<br>";
+    else {
+      if (cloverCalculate1(i, showProgramme) > 0)
+        result += "1级四叶草：" + cloverCalculate1(i, showProgramme) + "<br>";
+      if (cloverCalculate2(i, showProgramme) > 0)
+        result += "2级四叶草：" + cloverCalculate2(i, showProgramme) + "<br>";
+      if (cloverCalculate3(i, showProgramme) > 0)
+        result += "3级四叶草：" + cloverCalculate3(i, showProgramme) + "<br>";
+      if (cloverCalculate4(i, showProgramme) > 0)
+        result += "4级四叶草：" + cloverCalculate4(i, showProgramme) + "<br>";
+      if (cloverCalculate5(i, showProgramme) > 0)
+        result += "5级四叶草：" + cloverCalculate5(i, showProgramme) + "<br>";
+    }
+  }
+  return result;
+};
+//1级四叶草消耗量计算函数
+function cloverCalculate1(star, showProgramme) {
+  var k, q;
+  var result = 0;
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
+  if (star <= 1) return 0; //上1不需要任何草，结束递归
+  if (star <= 6) {     //计算的等级低于6级时
+    if (clover[star - 1] == 1.2) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate1(showProgramme[star - 1][0], showProgramme) + cloverCalculate1(showProgramme[star - 1][1], showProgramme) + cloverCalculate1(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate1(star - 1, showProgramme);
+      return result;
+    }
+    if (clover[star - 1] != 1.2) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate1(showProgramme[star - 1][0], showProgramme) + cloverCalculate1(showProgramme[star - 1][1], showProgramme) + cloverCalculate1(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate1(star - 1, showProgramme);
+      return result;
+    }
+  }
+  if (star >= 7) {     //计算的等级大于6级时
+    if (clover[star - 1] == 1.2) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate1(showProgramme[star - 1][0], showProgramme) + cloverCalculate1(showProgramme[star - 1][1], showProgramme) + cloverCalculate1(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate1(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate1(star - 1, showProgramme) - cloverCalculate1(star - 2, showProgramme));
+      return result;
+    }
+    if (clover[star - 1] != 1.2) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate1(showProgramme[star - 1][0], showProgramme) + cloverCalculate1(showProgramme[star - 1][1], showProgramme) + cloverCalculate1(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate1(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate1(star - 1, showProgramme) - cloverCalculate1(star - 2, showProgramme));
+      return result;
+    }
+  }
+}
+//2级四叶草消耗量计算函数
+function cloverCalculate2(star, showProgramme) {
+  var k, q;
+  var result = 0;
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
+  if (star <= 1) return 0; //上1不需要任何草，结束递归
+  if (star <= 6) {     //计算的等级低于6级时
+    if (clover[star - 1] == 1.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate2(showProgramme[star - 1][0], showProgramme) + cloverCalculate2(showProgramme[star - 1][1], showProgramme) + cloverCalculate2(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate2(star - 1, showProgramme);
+      return result;
+    }
+    if (clover[star - 1] != 1.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate2(showProgramme[star - 1][0], showProgramme) + cloverCalculate2(showProgramme[star - 1][1], showProgramme) + cloverCalculate2(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate2(star - 1, showProgramme);
+      return result;
+    }
+  }
+  if (star >= 7) {     //计算的等级大于6级时
+    if (clover[star - 1] == 1.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate2(showProgramme[star - 1][0], showProgramme) + cloverCalculate2(showProgramme[star - 1][1], showProgramme) + cloverCalculate2(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate2(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate2(star - 1, showProgramme) - cloverCalculate2(star - 2, showProgramme));
+      return result;
+    }
+    if (clover[star - 1] != 1.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate2(showProgramme[star - 1][0], showProgramme) + cloverCalculate2(showProgramme[star - 1][1], showProgramme) + cloverCalculate2(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate2(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate2(star - 1, showProgramme) - cloverCalculate2(star - 2, showProgramme));
+      return result;
+    }
+  }
+}
+//3级四叶草消耗量计算函数
+function cloverCalculate3(star, showProgramme) {
+  var k, q;
+  var result = 0;
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
+  if (star <= 1) return 0; //上1不需要任何草，结束递归
+  if (star <= 6) {     //计算的等级低于6级时
+    if (clover[star - 1] == 1.7) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate3(showProgramme[star - 1][0], showProgramme) + cloverCalculate3(showProgramme[star - 1][1], showProgramme) + cloverCalculate3(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate3(star - 1, showProgramme);
+      return result;
+    }
+    if (clover[star - 1] != 1.7) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate3(showProgramme[star - 1][0], showProgramme) + cloverCalculate3(showProgramme[star - 1][1], showProgramme) + cloverCalculate3(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate3(star - 1, showProgramme);
+      return result;
+    }
+  }
+  if (star >= 7) {     //计算的等级大于6级时
+    if (clover[star - 1] == 1.7) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate3(showProgramme[star - 1][0], showProgramme) + cloverCalculate3(showProgramme[star - 1][1], showProgramme) + cloverCalculate3(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate3(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate3(star - 1, showProgramme) - cloverCalculate3(star - 2, showProgramme));
+      return result;
+    }
+    if (clover[star - 1] != 1.7) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate3(showProgramme[star - 1][0], showProgramme) + cloverCalculate3(showProgramme[star - 1][1], showProgramme) + cloverCalculate3(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate3(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate3(star - 1, showProgramme) - cloverCalculate3(star - 2, showProgramme));
+      return result;
+    }
+  }
+}
+//4级四叶草消耗量计算函数
+function cloverCalculate4(star, showProgramme) {
+  var k, q;
+  var result = 0;
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
+  if (star <= 1) return 0; //上1不需要任何草，结束递归
+  if (star <= 6) {     //计算的等级低于6级时
+    if (clover[star - 1] == 2.0) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate4(showProgramme[star - 1][0], showProgramme) + cloverCalculate4(showProgramme[star - 1][1], showProgramme) + cloverCalculate4(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate4(star - 1, showProgramme);
+      return result;
+    }
+    if (clover[star - 1] != 2.0) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate4(showProgramme[star - 1][0], showProgramme) + cloverCalculate4(showProgramme[star - 1][1], showProgramme) + cloverCalculate4(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate4(star - 1, showProgramme);
+      return result;
+    }
+  }
+  if (star >= 7) {     //计算的等级大于6级时
+    if (clover[star - 1] == 2.0) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate4(showProgramme[star - 1][0], showProgramme) + cloverCalculate4(showProgramme[star - 1][1], showProgramme) + cloverCalculate4(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate4(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate4(star - 1, showProgramme) - cloverCalculate4(star - 2, showProgramme));
+      return result;
+    }
+    if (clover[star - 1] != 2.0) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate4(showProgramme[star - 1][0], showProgramme) + cloverCalculate4(showProgramme[star - 1][1], showProgramme) + cloverCalculate4(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate4(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate4(star - 1, showProgramme) - cloverCalculate4(star - 2, showProgramme));
+      return result;
+    }
+  }
+}
+//5级四叶草消耗量计算函数
+function cloverCalculate5(star, showProgramme) {
+  var k, q;
+  var result = 0;
+  //将用户输入的四叶草数值存储到数组中,这里自动排除不填的问题，当作不加草判断
+  var clover = [1, (clover1.value > 0) ? clover1.value : 1, (clover2.value > 0) ? clover2.value : 1, (clover3.value > 0) ? clover3.value : 1, (clover4.value > 0) ? clover4.value : 1, (clover5.value > 0) ? clover5.value : 1, (clover6.value > 0) ? clover6.value : 1, (clover7.value > 0) ? clover7.value : 1, (clover8.value > 0) ? clover8.value : 1, (clover9.value > 0) ? clover9.value : 1, (clover10.value > 0) ? clover10.value : 1, (clover11.value > 0) ? clover11.value : 1, (clover12.value > 0) ? clover12.value : 1];
+  if (star <= 1) return 0; //上1不需要任何草，结束递归
+  if (star <= 6) {     //计算的等级低于6级时
+    if (clover[star - 1] == 2.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate5(showProgramme[star - 1][0], showProgramme) + cloverCalculate5(showProgramme[star - 1][1], showProgramme) + cloverCalculate5(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate5(star - 1, showProgramme);
+      return result;
+    }
+    if (clover[star - 1] != 2.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate5(showProgramme[star - 1][0], showProgramme) + cloverCalculate5(showProgramme[star - 1][1], showProgramme) + cloverCalculate5(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate5(star - 1, showProgramme);
+      return result;
+    }
+  }
+  if (star >= 7) {     //计算的等级大于6级时
+    if (clover[star - 1] == 2.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q;
+      result += 1 / q * (cloverCalculate5(showProgramme[star - 1][0], showProgramme) + cloverCalculate5(showProgramme[star - 1][1], showProgramme) + cloverCalculate5(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate5(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate5(star - 1, showProgramme) - cloverCalculate5(star - 2, showProgramme));
+      return result;
+    }
+    if (clover[star - 1] != 2.4) {
+      k = (1 + 0.01 * bonus.value) * rateCalculate(star - 1, showProgramme[star - 1][0], showProgramme[star - 1][1], showProgramme[star - 1][2]);
+      q = rateValid(k);
+      result += 1 / q * (cloverCalculate5(showProgramme[star - 1][0], showProgramme) + cloverCalculate5(showProgramme[star - 1][1], showProgramme) + cloverCalculate5(showProgramme[star - 1][2], showProgramme));
+      result += cloverCalculate5(star - 1, showProgramme);
+      result += ((1 / q) - 1) * (cloverCalculate5(star - 1, showProgramme) - cloverCalculate5(star - 2, showProgramme));
+      return result;
+    }
+  }
+}
 </script>
 
 <style scoped>
