@@ -1,5 +1,5 @@
 <script setup>
-import { useDark } from '@vueuse/core'
+import {useDark} from '@vueuse/core'
 
 const isDark = useDark()
 
@@ -17,32 +17,28 @@ const isDark = useDark()
       href="https://survey.xiayeqz.com:3999/s/QEFoBL" target="_blank" style="color: #409EFF">问卷调查</a></span>
   <el-divider></el-divider>
   <h5>贡献者:</h5>
-  <el-tooltip content="czyczy608" placement="top">
-    <el-avatar :size="50">
-      <a target="_blank" href="https://github.com/czyczy608"><img
-          src="https://avatars.githubusercontent.com/u/57560140?v=4"
-      />
-      </a>
-    </el-avatar>
-  </el-tooltip>
-  &ensp;
-  <el-tooltip content="Xiaye2332" placement="top">
-    <el-avatar :size="50">
-      <a target="_blank" href="https://github.com/Xiaye2332"><img
-          src="https://avatars.githubusercontent.com/u/86192453?v=4"
-      />
-      </a>
-    </el-avatar>
-  </el-tooltip>
-  &ensp;
-  <el-tooltip content="superboyyy" placement="top">
-    <el-avatar :size="50">
-      <a target="_blank" href="https://github.com/superboyyy"><img
-          src="https://avatars.githubusercontent.com/u/75305545?v=4"
-      />
-      </a>
-    </el-avatar>
-  </el-tooltip>
+  <a href="https://github.com/czyczy608" target="_blank">
+    <el-tooltip content="czyczy608" placement="top">
+      <el-avatar
+          src="https://avatars.githubusercontent.com/u/57560140?v=4">
+      </el-avatar>
+
+    </el-tooltip>
+    &ensp;</a>
+  <a href="https://github.com/Xiaye2332" target="_blank">
+    <el-tooltip content="Xiaye2332" placement="top">
+      <el-avatar
+          src="https://avatars.githubusercontent.com/u/86192453?v=4">
+      </el-avatar>
+    </el-tooltip>
+    &ensp;</a>
+  <a href="https://github.com/superboyyy" target="_blank">
+    <el-tooltip content="superboyyy" placement="top">
+      <el-avatar
+          src="https://avatars.githubusercontent.com/u/75305545?v=4">
+      </el-avatar>
+    </el-tooltip>
+  </a>
   <span class="notice"><br><br>本页面遵照GPLv3协议开放源代码，您可以自由传播和修改，转载请注明作者和出处<br><a
       href="https://github.com/Xiaye2332/FVM_Calculator" target="_blank"><img
       src="https://img.shields.io/badge/Github-FVM_Calculator%20v1.2-blue"></a></span>
