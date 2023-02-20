@@ -1,5 +1,5 @@
 <template>
-<h1 class="header">美食强化最优路径计算器</h1>
+<h1 class="header">宝石强化最优路径计算器(测试版本)</h1>
 </template>
 
 
