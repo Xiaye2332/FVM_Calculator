@@ -1,5 +1,5 @@
 <template>
-<h1 class="header">美食强化最优路径计算器</h1>
+  <h1 class="header">卡片强化最优路径计算器 | <el-link href="http://www.msdzls.cn:7776" type="primary">宝石计算器</el-link></h1>
 </template>
 
 
